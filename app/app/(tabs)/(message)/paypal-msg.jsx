@@ -61,19 +61,73 @@ const PaypalChat = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#fff' },
-  header: { flexDirection: 'row', alignItems: 'center', padding: 15, borderBottomWidth: 1, borderBottomColor: '#eee' },
-  headerTitle: { fontSize: 18, fontWeight: 'bold', marginLeft: 10 },
-  chatList: { padding: 15 },
-  receivedRow: { alignSelf: 'flex-start', marginBottom: 10 },
-  sentRow: { alignSelf: 'flex-end', marginBottom: 10 },
-  receivedBubble: { backgroundColor: '#F1F1F1', padding: 12, borderRadius: 15, maxWidth: '80%' },
-  sentBubble: { backgroundColor: '#007AFF', padding: 12, borderRadius: 15 },
-  sentText: { color: '#fff' },
-  msgText: { color: '#000' },
-  inputContainer: { flexDirection: 'row', padding: 10, alignItems: 'center', borderTopWidth: 1, borderTopColor: '#eee' },
-  input: { flex: 1, backgroundColor: '#F2F2F7', borderRadius: 20, paddingHorizontal: 15, height: 40, marginRight: 10 },
-  sendBtn: { backgroundColor: '#007AFF', width: 36, height: 36, borderRadius: 18, justifyContent: 'center', alignItems: 'center' }
+  container: { 
+    flex: 1, 
+    backgroundColor: '#fff' 
+  },
+  header: { 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    padding: 15, 
+    borderBottomWidth: 1, 
+    borderBottomColor: '#eee' 
+  },
+  headerTitle: { 
+    fontSize: 18, 
+    fontWeight: 'bold', 
+    marginLeft: 10 
+  },
+  chatList: { 
+    padding: 15 
+  },
+  receivedRow: { 
+    alignSelf: 'flex-start', 
+    marginBottom: 10 
+  },
+  sentRow: { 
+    alignSelf: 'flex-end', 
+    marginBottom: 10 
+  },
+  receivedBubble: { 
+    backgroundColor: '#F1F1F1', 
+    padding: 12, 
+    borderRadius: 15, 
+    maxWidth: '80%' 
+  },
+  sentBubble: { 
+    backgroundColor: '#007AFF', 
+    padding: 12, 
+    borderRadius: 15 
+  },
+  sentText: { 
+    color: '#fff' 
+  },
+  msgText: { 
+    color: '#000' 
+  },
+  inputContainer: { 
+    flexDirection: 'row', 
+    padding: 10, 
+    alignItems: 'center', 
+    borderTopWidth: 1, 
+    borderTopColor: '#eee' 
+  },
+  input: { 
+    flex: 1, 
+    backgroundColor: '#F2F2F7', 
+    borderRadius: 20, 
+    paddingHorizontal: 15, 
+    height: 40, 
+    marginRight: 10 
+  },
+  sendBtn: { 
+    backgroundColor: '#007AFF', 
+    width: 36, 
+    height: 36, 
+    borderRadius: 18, 
+    justifyContent: 'center', 
+    alignItems: 'center' 
+  }
 });
 
 export default PaypalChat;

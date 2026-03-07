@@ -1,27 +1,26 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, View, Pressable, Image, TextInput} from 'react-native';
+import { FlatList, StyleSheet, Text, View, Pressable, Image, TextInput, TouchableOpacity} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 export default function Branch() {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+              <MaterialCommunityIcons name="chevron-left" size={32} color="#fff" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle} >Branch</Text>
+          </View>
+
           <View style={styles.container}>
-
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={require('../../../assets/images/status-bar2.png')}/>
-            </View>
-
-            <Pressable onPress={()=> { router.back()}} style={styles.textContainer}>
-              <Text style={styles.text}> Branch </Text>
-            </Pressable>
-
             <View style={styles.optionsContainer}>
               <Image style={styles.branch} source={require('../../../assets/images/image.jpg')}/>
             </View>
 
             <View style={styles.textInput}>
-                <TextInput style={styles.input} placeholder='Enter branch name or code'/>
+                <TextInput placeholder='Enter branch name or code' style={styles.input} />
             </View>
 
              <Pressable onPress={() => alert('Search pressed')} style={styles.searchButton}>
@@ -37,18 +36,31 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  imageContainer:{
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0', 
   },
-  image:{
-    width: '100%',
-    height: 40,
-    alignSelf: 'center',
+  backButton: {
+    padding: 11,
+    marginLeft: -8, 
+    backgroundColor: '#00f'
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    flex: 1, 
+    backgroundColor: '#00f',
+    padding: 15,
+    color: '#fff'
   },
    branch:{
     width: '90%',
-    height: 300,
+    height: 250,
     alignSelf: 'center',
     marginVertical: 20,
   },
@@ -76,6 +88,7 @@ const styles = StyleSheet.create({
       borderWidth: 1,
       borderRadius: 18,
       paddingHorizontal: 16,
+      color: '#000'
     },
     searchButton:{
       width: '80%',

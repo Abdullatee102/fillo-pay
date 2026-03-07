@@ -1,86 +1,46 @@
-import { 
-  Text, Pressable, Image, Alert, View, TextInput, 
-  TouchableOpacity, StyleSheet, ScrollView, 
-  KeyboardAvoidingView, Platform 
-} from "react-native";
+import { Text, Pressable, Image, Alert, View, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { useState } from 'react';
+import auth from '@react-native-firebase/auth'; 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import { useAuthStore } from "../(tabs)/(tabs)/store";
 
 const SignUp = () => {
+  const signup = useAuthStore((state) => state.signup);
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const validateAndSignUp = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    if (!emailRegex.test(email)) {
-      Alert.alert("Invalid Email", "Please enter a valid email address.");
+  const handleSignUp = async () => {
+    if (password !== confirmPassword) {
+      Alert.alert("Sign Up Error", "Passwords do not match.");
       return;
     }
-    if (phone.length < 10 || isNaN(phone)) {
-      Alert.alert("Invalid Phone", "Please enter a valid phone number.");
-      return;
+    try {
+      await auth().createUserWithEmailAndPassword(email, password);
+      await signup({email}); 
+      Alert.alert('Account Created', 'Please Sign In.', [{ text: 'OK', onPress: () => router.push('./sign-in') }]);
+    } catch (error) {
+      Alert.alert("Sign Up Error", error.message);
     }
-    if (password.length < 6) {
-      Alert.alert("Weak Password", "Please, enter a password with at least 6 characters.");
-      return;
-    }
-
-    Alert.alert('Account Created', 'Please Sign In.', [
-      { text: 'OK', onPress: () => router.push('./sign-in') }
-    ]);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
-          <Image style={styles.statusBar} source={require('../../assets/images/status-bar.png')}/>
-          
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1}}>
+        <ScrollView contentContainerStyle={{ flex: 1, marginTop: 50 }} bounces={false}>
           <Text style={styles.headerTitle}> Sign Up </Text>
-
           <View style={styles.formCard}>
             <Image style={styles.logo} source={require('../../assets/images/logo2.png')}/>
-
-            <TextInput
-              placeholder="Email"
-              style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-
-            <TextInput
-              placeholder="Phone Number"
-              style={styles.input}
-              value={phone}
-              onChangeText={setPhone}
-              keyboardType="numeric"
-            />            
-
-            <TextInput
-              placeholder="Password"
-              secureTextEntry
-              style={styles.input}
-              value={password}
-              onChangeText={setPassword}
-            />
-
-            <TouchableOpacity style={styles.primaryBtn} onPress={validateAndSignUp}>
+            <TextInput placeholder="Email" style={styles.input} value={email} onChangeText={setEmail} autoCapitalize="none" />
+            <TextInput placeholder="Password" secureTextEntry style={styles.input} value={password} onChangeText={setPassword} />
+            <TextInput placeholder="Confirm Password" secureTextEntry style={styles.input} value={confirmPassword} onChangeText={setConfirmPassword} />
+            <TouchableOpacity style={styles.primaryBtn} onPress={handleSignUp}>
               <Text style={styles.btnText}>Sign up</Text> 
             </TouchableOpacity>
-
-            <View style={[styles.footerRow, { marginTop: 40 }]}>
-              <Text style={styles.footerText}>Have an account?</Text>
-              <Pressable onPress={() => router.push('./sign-in')}>
-                <Text style={styles.linkText}> Sign In </Text>
-              </Pressable>
+            <View style={styles.btnContainer}>
+              <Text style={styles.btnTextContainer}>Have an account?</Text>
+              <Pressable onPress={() => router.push('./sign-in')}><Text style={styles.linkText}> Sign In </Text></Pressable>
             </View>
           </View>
         </ScrollView>
@@ -101,21 +61,31 @@ const styles = StyleSheet.create({
     paddingTop: 10, paddingBottom: 30
   },
   input: {
-    width: '85%', height: 55, borderColor: '#DDD', 
-    borderWidth: 1, borderRadius: 15, paddingHorizontal: 15, 
-    marginBottom: 15, alignSelf: 'center', fontSize: 16
+    width: '85%', 
+    height: 55, 
+    borderColor: '#DDD', 
+    borderWidth: 1, 
+    borderRadius: 15, 
+    paddingHorizontal: 15, 
+    marginBottom: 15, 
+    alignSelf: 'center', 
+    fontSize: 16,
+    backgroundColor: '#b4b0b0',
   },
   primaryBtn: {
-    width: '85%', height: 55, backgroundColor: '#0C00DF', 
-    borderRadius: 15, justifyContent: 'center', 
+    width: '85%', 
+    height: 55, 
+    backgroundColor: '#0C00DF', 
+    borderRadius: 15, 
+    justifyContent: 'center', 
     alignItems: 'center', alignSelf: 'center', marginTop: 10
   },
   btnText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
-  footerRow: { 
+  btnContainer: { 
     flexDirection: 'row', justifyContent: 'center', 
-    alignItems: 'center', marginTop: 20 
+    alignItems: 'center', marginTop: 40 
   },
-  footerText: { fontSize: 16, color: '#444' },
+  btnTextContainer: { fontSize: 16, color: '#000' },
   linkText: { fontSize: 16, color: '#0C00DF', fontWeight: 'bold' },
   statusBar: { width: '100%', height: 40 },
   logo: { width: 100, height: 100, alignSelf: 'center', marginVertical: 35 },

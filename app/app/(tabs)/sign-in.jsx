@@ -1,72 +1,55 @@
-import { 
-  Text, Pressable, Image, Alert, View, TextInput, 
-  TouchableOpacity, StyleSheet, ScrollView, 
-  KeyboardAvoidingView, Platform 
-} from "react-native";
+import { Text, Pressable, Image, Alert, View, TextInput, TouchableOpacity, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { useState } from 'react';
+import auth from '@react-native-firebase/auth'; 
 import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
+import { useAuthStore } from "../(tabs)/(tabs)/store";
 
 const SignIn = () => {
-  const [identifier, setIdentifier] = useState(""); // Handles Email or Phone
-  const [password, setPassword] = useState("");
+  const login = useAuthStore((state) => state.login);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    if (!identifier || !password) {
-      Alert.alert("Required", "Please fill in all fields.");
-      return;
+  const handleBiometricSignIn = () => {
+    Alert.alert('Biometric Sign-In', 'Biometric authentication is not implemented yet.');
+  };
+
+  const handleSignIn = async () => {
+    if (!email || !password) {
+        Alert.alert('Invalid Credentials', 'Please enter the correct email and password.');
+        return;
     }
-    // Logic for successful login
-    Alert.alert('Success', 'Redirecting to Home...', [
-      { text: 'OK', onPress: () => router.push('../(tabs)/home') }
-    ]);
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+      await login({email});
+      Alert.alert('Sign In Successful', 'You are signed in!', [{ text: 'OK', onPress: () => router.push('../home') }]); 
+    }
+    catch (error) {
+      Alert.alert("Sign In Error", error.message);
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView 
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={{ flex: 1 }}
-      >
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }} bounces={false}>
-          <Image style={styles.statusBar} source={require('../../assets/images/status-bar.png')}/>
-          
+      <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"} style={{ flex: 1 }}>
+        <ScrollView contentContainerStyle={{ flex: 1, marginTop: 40 }} bounces={false}>
           <Text style={styles.headerTitle}> Sign In </Text>
-
           <View style={styles.formCard}>
             <Image style={styles.logo} source={require('../../assets/images/logo1.png')}/>
-
-            <TextInput
-              placeholder="Email or Phone Number"
-              style={styles.input}
-              value={identifier}
-              onChangeText={setIdentifier}
-              keyboardType="email-address"
-              autoCapitalize="none"
-            />
-
-            <TextInput
-              placeholder="Password"
-              secureTextEntry
-              style={styles.input}
-              value={password}
-              onChangeText={setPassword}
-            />
-
-            <TouchableOpacity style={styles.primaryBtn} onPress={handleLogin}>
-              <Text style={styles.btnText}>Log In</Text> 
+            <TextInput placeholder="Email" style={styles.input} value={email} onChangeText={setEmail} autoCapitalize="none" />
+            <TextInput placeholder="Password" secureTextEntry style={styles.input} value={password} onChangeText={setPassword} />
+            <TouchableOpacity style={styles.primaryBtn} onPress={handleSignIn}>
+              <Text style={styles.btnText}>Sign in</Text> 
             </TouchableOpacity>
-
-            <View style={styles.footerRow}>
+            <View style={[styles.footerRow, { marginTop: 40 }]}>
               <Text style={styles.footerText}>Don't have an account?</Text>
               <Pressable onPress={() => router.push('./sign-up')}>
                 <Text style={styles.linkText}> Sign Up </Text>
               </Pressable>
+              <Pressable style={styles.biometricContainer} onPress={handleBiometricSignIn}>
+                <Image source={require('../../assets/images/fingerprint.png')} style={styles.fingerprint} />
+              </Pressable>
             </View>
-
-            <Pressable onPress={() => Alert.alert("Biometric Login", "Not implemented yet!") || router.push('./(tabs)/home')} style={styles.biometricContainer}>
-              <Image style={styles.fingerprint} source={require('../../assets/images/fingerprint.png')}/>
-            </Pressable>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -75,37 +58,50 @@ const SignIn = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: 'blue' },
+  container: { flex: 1, backgroundColor: 'blue',},
   headerTitle: { 
     fontSize: 22, fontWeight: 'bold', alignSelf: 'center', 
     marginVertical: 20, color: 'white' 
   },
   formCard: { 
-    flex: 1, backgroundColor: 'white', 
+    flex: 1, backgroundColor: 'white',
     borderTopLeftRadius: 30, borderTopRightRadius: 30,
-    paddingTop: 10, paddingBottom: 30
+    paddingTop: 70, marginTop: 10
   },
   input: {
-    width: '85%', height: 55, borderColor: '#DDD', 
-    borderWidth: 1, borderRadius: 15, paddingHorizontal: 15, 
-    marginBottom: 15, alignSelf: 'center', fontSize: 16
+    width: '85%',
+    marginBottom: 15, 
+    alignSelf: 'center',
+    fontSize: 16,
+    backgroundColor: '#b4b0b0',
+    color: 'black',
+    height: 55,
+    borderWidth: 1,
+    borderColor: '#DDD',
+    borderRadius: 15,
+    paddingHorizontal: 15,
   },
   primaryBtn: {
-    width: '85%', height: 55, backgroundColor: '#0C00DF', 
-    borderRadius: 15, justifyContent: 'center', 
-    alignItems: 'center', alignSelf: 'center', marginTop: 10
+    width: '85%',
+    height: 55,
+    backgroundColor: '#0C00DF',
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: 20,
   },
-  btnText: { color: 'white', fontSize: 18, fontWeight: 'bold' },
+  btnText: { fontSize: 18, fontWeight: 'bold', color: 'white' },
   footerRow: { 
-    flexDirection: 'row', justifyContent: 'center', 
+    justifyContent: 'center', 
     alignItems: 'center', marginTop: 20 
   },
-  footerText: { fontSize: 16, color: '#444' },
-  linkText: { fontSize: 16, color: '#0C00DF', fontWeight: 'bold' },
-  statusBar: { width: '100%', height: 40 },
+  footerText: { fontSize: 16, color: '#000', position: 'absolute', left: 70, top: 0 },
+  linkText: { fontSize: 16, color: '#0C00DF', fontWeight: 'bold', position: 'absolute', left: '12%', top: 0 },
   logo: { width: 100, height: 100, alignSelf: 'center', marginVertical: 35 },
-  biometricContainer: { marginTop: 30 },
-  fingerprint: { width: 60, height: 60, alignSelf: 'center' },
+  biometricContainer: { marginTop: 80 },
+  fingerprint: { width: 60, height: 60, alignSelf: 'center', },
+
 });
 
-export default SignIn;
+export default SignIn;  

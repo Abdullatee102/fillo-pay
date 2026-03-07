@@ -74,7 +74,7 @@ const MessageScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FD',
+    backgroundColor: 'rgb(71, 71, 129)',
   },
   header: {
     paddingHorizontal: 20,

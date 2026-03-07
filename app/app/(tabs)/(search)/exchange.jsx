@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, View, Pressable, Image, TextInput, ScrollView, TouchableOpacity, Alert} from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 export default function Exchange() {
     return (
         <SafeAreaView style={{ flex: 1}}>
-          <View style={styles.container}>
-            <View style={styles.imageContainer}>
-              <Image style={styles.image} source={require('../../../assets/images/status-bar2.png')}/>
-            </View>
-                        
-            <Pressable onPress={()=> { router.back()}} style={styles.textContainer}>
-              <Text style={styles.text}> Exchange </Text>
-            </Pressable>
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+              <MaterialCommunityIcons name="chevron-left" size={32} color="#fff" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle} >Exchange</Text>
+          </View>
+
+          <View style={styles.container}>              
             <View style={styles.exchange}>
               <Image style={styles.exchangeContainer} source={require('../../../assets/images/xchange-img.png')}/>
             </View>
@@ -41,25 +42,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#c0bebe',
   },
-  imageContainer:{
+  header: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0', 
   },
-  image:{
-    width: '100%',
-    height: 40,
-    alignSelf: 'center',
+  backButton: {
+    padding: 11,
+    marginLeft: -8, 
+    backgroundColor: '#00f'
   },
-   textContainer:{
-     padding: 15,
-     backgroundColor: 'blue',
-   },
-   text:{
-     fontSize: 20,
-     fontWeight: 'bold',
-     color:'white',
-     marginLeft: 20
-   },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    flex: 1, 
+    backgroundColor: '#00f',
+    padding: 15,
+    color: '#fff'
+  },
    exchange:{
     alignItems: 'center',
     marginVertical: 20,

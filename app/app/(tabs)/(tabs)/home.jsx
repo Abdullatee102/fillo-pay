@@ -1,29 +1,36 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, View, Pressable, RefreshControl, ActivityIndicator, Image, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, Pressable, RefreshControl, ActivityIndicator, Image, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import { useAuthStore } from '../(tabs)/store';
 
 const Home = () => {
+  const user = useAuthStore((state) => state.user);
+  const [refreshing, setRefreshing] = useState(false);
 
-  return (
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  };
+
+   return (
     <SafeAreaView style={{ flex: 1, backgroundColor:'blue'}}>
-    <ScrollView>
+    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 
-      <View style={{backgroundColor:'blue'}}>
-      <View>
-        <Image style={styles.image} source={require('../../../assets/images/status-bar.png')}/>
-      </View>
+      <View style={{backgroundColor:'blue', margin: 10}}>
 
       <View>
-        <Image style={styles.user} source={require('../../../assets/images/boy.jpg')}/>
-        <Text style={styles.text}> Hi, Abdullateef </Text>
+        <Pressable onPress={ () => {router.push('../settings')}} style={styles.userContainer}>
+          <Image style={styles.user} source={require('../../../assets/images/boy.jpg')}/>
+        </Pressable>
+        <Text style={styles.text}> Hi, {user ? user.name : 'User'} </Text>
         <Image style={styles.notification} source={require('../../../assets/images/notification.png')}/>
       </View>
       </View>
 
-
-
-      <View style={{ backgroundColor:'#979797', borderTopLeftRadius: 30, borderTopRightRadius: 30}}>
+      <View style={{ backgroundColor:'rgb(71, 71, 129)', borderTopLeftRadius: 30, borderTopRightRadius: 30}}>
       <View style={{borderTopLeftRadius: 30, borderTopRightRadius: 30, alignItems: 'center',}}>
         <Image style={styles.card} source={require('../../../assets/images/image1.png')} />
       </View>
@@ -64,7 +71,7 @@ const Home = () => {
         </Pressable>
         </View>
 
-        <View style={{flexDirection: 'row', gap: 60, marginBottom: 20, alignSelf: 'center'}}>
+        <View style={{flexDirection: 'row', gap: 40, marginBottom: 20, alignSelf: 'center'}}>
         <Pressable onPress={() => {router.push('../../card')}} style={{alignItems: 'center', backgroundColor:'#fff', padding: 10, borderRadius: 10}}>
           <Image style={styles.cardImg} source={require('../../../assets/images/card-img.png')}/>
           <Text style={styles.cardImgText}> Card </Text>
@@ -90,16 +97,17 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  image: {
-    width: '100%',
+  userContainer:{
+    width: 40,
     height: 40,
+    borderRadius: 20,
+    marginLeft: 10,
+    marginTop: 20,
   },
   user:{
     width: 40,
     height: 40,
     borderRadius: 20,
-    marginLeft: 20,
-    marginTop: 20,
   },
   text:{
     fontSize: 20,
@@ -111,7 +119,7 @@ const styles = StyleSheet.create({
     width:24,
     height:24,
     position:'absolute',
-    right:30,
+    right:15,
     top:30,
     cursor: 'pointer'
   },
@@ -132,8 +140,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   receive:{
-    width: 35,
-    height: 35,
+    width: 40,
+    height: 50,
   },
   receiveText:{
     marginTop: 10,
@@ -168,17 +176,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   savings:{
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
   },
   savingsText:{
     marginTop: 10,
-    fontSize: 16,
+    fontSize: 17,
     fontWeight: 'bold',
   },
   cardImg:{
     width: 50,
     height: 50,
+    marginRight: 30,
+    alignSelf: 'center',
+    justifyContent: 'center',
   },
   cardImgText:{
     marginTop: 10,
@@ -186,7 +197,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   report:{
-    width: 50,
+    width: 70,
     height: 50,
   },
   reportText:{
@@ -195,12 +206,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   beneficiary:{
-    width: 30,
-    height: 30,
+    width: 80,
+    height: 60,
   },
   beneficiaryText:{
     marginTop: 10,
-    fontSize: 16,
+    fontSize: 10,
     fontWeight: 'bold',
   },
 }); 

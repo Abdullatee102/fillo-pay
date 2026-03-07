@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, View, Pressable, Image} from 'react-native';
+import { FlatList, StyleSheet, Text, View, Pressable, TouchableOpacity, Image} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
 
 const Search = () => {
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-          <View style={styles.container}>
-            
-            <View style={styles.imageContainer}>
-              <Image style={styles.image} source={require('../../../assets/images/status-bar2.png')}/>
-            </View>
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(71, 71, 129)' }}>
 
-            <Pressable onPress={()=> { router.back()}} style={styles.textContainer}>
-              <Text style={styles.text}> {'<'}   Search </Text>
-            </Pressable>
+          <View style={styles.header}>
+            <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+              <Text style={styles.backArrow}>{'<'}</Text>
+              <Text style={styles.headerTitle}>Search</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.container}>
 
             <Pressable onPress={() => {router.push('../../branch')}} style={styles.optionsContainer}>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}> Branch </Text>
@@ -64,26 +63,31 @@ const Search = () => {
 
 const styles = StyleSheet.create({
   container:{
-    flex: 1,
-    backgroundColor: 'white',
+    flex: 1,  
   },
-  imageContainer:{
-    width:'100%',
-    height: 40,
+  header: {
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  image:{
-    width:'100%',
-    height: '100%',
-    alignSelf: 'center',
-  },
-  textContainer:{
-    padding: 15,
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 15
   },
-  text:{
-    fontSize: 20,
+  backArrow: {
+    fontSize: 24,
+    fontWeight: '300',
+    marginRight: 10,
+    color: '#fff'
+  },
+  headerTitle: {
+    fontSize: 22,
     fontWeight: 'bold',
-    color:'white',
+    color: '#fff',
   },
   optionsContainer:{
     margin:10,

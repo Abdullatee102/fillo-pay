@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, View, Pressable, Image, ScrollView} from 'react-native';
+import { FlatList, StyleSheet, Text, View, Pressable, Image, ScrollView, TouchableOpacity} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router } from 'expo-router';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function ExchangeRate() {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <ScrollView>
+
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+              <MaterialCommunityIcons name="chevron-left" size={32} color="#fff" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle} >Exchange Rate</Text>
+          </View>
+
           <View style={styles.container}>
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={require('../../../assets/images/status-bar2.png')}/>
-            </View>
-            
-            <Pressable onPress={()=> { router.back()}} style={styles.textContainer}>
-              <Text style={styles.text}> Exchange rate </Text>
-            </Pressable>
 
             <View style={styles.optionsContainer}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, alignItems: 'center'}}>
@@ -105,24 +107,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  imageContainer:{
+   header: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0', 
   },
-  image:{
-    width: '100%',
-    height: 40,
-    alignSelf: 'center',
+  backButton: {
+    padding: 11,
+    marginLeft: -8, 
+    backgroundColor: '#00f'
   },
-   textContainer:{
-     padding: 15,
-     backgroundColor: 'blue',
-   },
-   text:{
-     fontSize: 20,
-     fontWeight: 'bold',
-     color:'#fff',
-    },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    flex: 1, 
+    backgroundColor: '#00f',
+    padding: 15,
+    color: '#fff'
+  },
     optionsContainer:{
       margin: 10,
       padding:15,

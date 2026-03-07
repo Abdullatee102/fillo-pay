@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, View, Pressable, Image, ScrollView} from 'react-native';
+import { FlatList, StyleSheet, Text, View, Pressable, TouchableOpacity, Image, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 
 export default function InterestRate() {
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
         <ScrollView>
-          <View style={styles.container}>
-            <View>
-                <Image source={require('../../../assets/images/status-bar2.png')} style={styles.image}/>
-            </View>
+          <View style={styles.header}>
+            <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+              <MaterialCommunityIcons name="chevron-left" size={32} color="#fff" />
+            </TouchableOpacity>
+            <Text style={styles.headerTitle} >Interest Rate</Text>
+          </View>
 
-            <Pressable onPress={()=> { router.back()}} style={styles.textContainer}>
-              <Text style={styles.text}> Interest Rate </Text>
-            </Pressable>
+          <View style={styles.container}>
             
             <View style={styles.optionsContainer}>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between', padding: 10, alignItems: 'center'}}>
@@ -130,20 +131,28 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
     },
-    image:{
-        width: '100%',
-        height: 40,
-        alignSelf: 'center',
-    },
-    textContainer:{
-        padding: 15,
-        backgroundColor: 'blue',
-    },
-    text:{
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'white',
-    },
+    header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0', 
+  },
+  backButton: {
+    padding: 11,
+    marginLeft: -8, 
+    backgroundColor: '#00f'
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    flex: 1, 
+    backgroundColor: '#00f',
+    padding: 15,
+    color: '#fff'
+  },
     optionsContainer:{
         padding: 15,
         backgroundColor: '#f0f0f0',
