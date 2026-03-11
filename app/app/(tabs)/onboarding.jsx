@@ -44,10 +44,38 @@ export default function OnboardingScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgb(88, 88, 206)' },
-  image: { width: 300, height: 300, marginBottom: 30 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 10 },
-  description: { fontSize: 16, color: '#fff', textAlign: 'center', paddingHorizontal: 20, marginBottom: 30 },
-  button: { backgroundColor: '#007AFF', paddingVertical: 15, paddingHorizontal: 40, borderRadius: 25 },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+  container: { 
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center', 
+    backgroundColor: 'rgb(88, 88, 206)' 
+  },
+  image: { 
+    width: 300, 
+    height: 300, 
+    marginBottom: 30 
+  },
+  title: { 
+    fontSize: 24, 
+    fontWeight: 'bold', 
+    marginBottom: 10 
+  },
+  description: { 
+    fontSize: 16, 
+    color: '#fff', 
+    textAlign: 'center', 
+    paddingHorizontal: 20, 
+    marginBottom: 30 
+  },
+  button: { 
+    backgroundColor: '#007AFF', 
+    paddingVertical: 15, 
+    paddingHorizontal: 40, 
+    borderRadius: 25 
+  },
+  buttonText: { 
+    color: '#fff', 
+    fontSize: 16, 
+    fontWeight: 'bold' 
+  },
 }); 
